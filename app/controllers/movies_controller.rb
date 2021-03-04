@@ -8,6 +8,17 @@ class MoviesController < ApplicationController
 
   def index
     @movies = Movie.all
+    @all_ratings = Movie.all_ratings
+    
+    # check boxes
+    if params[:ratings]
+      @ratings_to_show = params[:ratings]
+    else 
+      @ratings_to_show = Hash[@all_ratings]
+    end
+    
+    # params[:sort]
+    # session[]
   end
 
   def new
