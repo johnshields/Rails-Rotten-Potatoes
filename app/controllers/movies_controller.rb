@@ -7,31 +7,17 @@ class MoviesController < ApplicationController
   end
 
   def index
-    # @movies = Movie.all
     @all_ratings = Movie.all_ratings
-    sort_params = params[:sort]
-    case sort_params
-      when 'title'
-        ordering, @title_header = {:title => :asc}, 'bg-warning hilite'
-      when 'release_date'
-        ordering, @release_date_header = {:release_date => :asc}, 'bg-warning hilite'
-    end
+     # sort the movies by title & release data
+    @sort = params[:sort]
+    @movies = Movie.all.order(@sort)
     
-    # check boxes
     if params[:ratings]
-      # show rating if a check box is ticked
       @ratings_to_show = params[:ratings]
     else 
-      # no check boxes ticked
-      @ratings_to_show = Hash[@all_ratings.map {|rating| [rating, rating]}]
+      @ratings_to_show = Hash[@all_ratings]
     end
     
-    if params[:sort] && params[:ratings]
-      sort = params[:sort]
-      @ratings_to_show = params[:ratings]
-      redirect_to :sort => sort, :ratings => @ratings_to_show and return
-    end
-    @movies = Movie.where(rating: @ratings_to_show.keys).order(ordering)
   end # end index
 
   def new
