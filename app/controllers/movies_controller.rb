@@ -7,19 +7,22 @@ class MoviesController < ApplicationController
   end
 
   def index
+    @movies = Movie.all
     @all_ratings = Movie.all_ratings
-     # sort the movies by title & release data
-    @sort = params[:sort]
-    @movies = Movie.all.order(@sort)
-    
-    if params[:ratings]
-      @ratings_to_show = params[:ratings]
-    else 
+    @sort = params[:sort] || session[:sort]
+    # sort the movies by rating
+    if params[:ratings] || session[:ratings]
+      params[:ratings].nil? ? @ratings_to_show = @all_ratings : @ratings_to_show = params[:ratings].keys
+      @movies = Movie.where(rating: @ratings_to_show).order(@sort)
+    else
       @ratings_to_show = Hash[@all_ratings]
     end
-    
+    # sort the movies by title & release date 
+    if params[:sort] || session[:sort]
+      @movies = Movie.all.order(@sort)
+    end
   end # end index
-
+  
   def new
     # default: render 'new' template
   end
