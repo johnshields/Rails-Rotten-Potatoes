@@ -15,7 +15,7 @@ class MoviesController < ApplicationController
       params[:ratings].nil? ? @ratings_to_show = @all_ratings : @ratings_to_show = params[:ratings].keys
       @movies = Movie.where(rating: @ratings_to_show).order(@sort)
     else
-      @ratings_to_show = Hash[@all_ratings]
+      @ratings_to_show = Hash[@all_ratings.map {|rating| [rating, rating]}]
     end
     # sort the movies by title & release date 
     if params[:sort] || session[:sort]
