@@ -8,6 +8,7 @@ class MoviesController < ApplicationController
 
   def index
     # sort movies by rating, title & release date
+    # Reference https://stackoverflow.com/questions/30041642/what-does-mean-in-ruby
     @all_ratings = Movie.all_ratings
     @sort = params[:sort] || session[:sort]
     session[:ratings] = session[:ratings] || @all_ratings
